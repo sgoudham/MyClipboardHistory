@@ -1,5 +1,7 @@
 package me.goudham.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -7,24 +9,27 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 
 public class TransferableImage implements Transferable {
 
-	private final Image i;
+	private final Image image;
 
-	public TransferableImage(Image i) {
-		this.i = i;
+	public TransferableImage(@NotNull Image image) {
+		this.image = image;
 	}
 
+	@Override
 	public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
-		if (flavor.equals(DataFlavor.imageFlavor) && i != null) {
-			return i;
+		if (flavor.equals(DataFlavor.imageFlavor)) {
+			return image;
 		} else {
 			throw new UnsupportedFlavorException(flavor);
 		}
 	}
 
+	@Override
 	public DataFlavor[] getTransferDataFlavors() {
-		return new DataFlavor[] {DataFlavor.imageFlavor};
+		return new DataFlavor[] { DataFlavor.imageFlavor };
 	}
 
+	@Override
 	public boolean isDataFlavorSupported(DataFlavor flavor) {
 		DataFlavor[] flavors = getTransferDataFlavors();
 		for (DataFlavor dataFlavor : flavors) {
