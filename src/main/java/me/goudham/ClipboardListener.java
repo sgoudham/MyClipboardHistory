@@ -1,10 +1,8 @@
 package me.goudham;
 
 import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.*;
+import java.io.IOException;
 
 public class ClipboardListener extends Thread implements ClipboardOwner {
 
@@ -18,9 +16,8 @@ public class ClipboardListener extends Thread implements ClipboardOwner {
     @Override
     public void lostOwnership(Clipboard c, Transferable t) {
         try {
-            System.out.println("Sleeping for 200 milliseconds");
             sleep(200);
-        } catch (Exception ignored) { }
+        } catch (InterruptedException ignored) { }
 
         Transferable contents = c.getContents(currentThread());
         processContents(contents);
@@ -34,7 +31,7 @@ public class ClipboardListener extends Thread implements ClipboardOwner {
             if (entryListener != null) {
                 entryListener.onCopy(what);
             }
-        } catch (Exception ignored) { }
+        } catch (UnsupportedFlavorException | IOException ignored) { }
     }
 
     public void regainOwnership(Clipboard c, Transferable t) {
