@@ -1,4 +1,4 @@
-package me.goudham.controller;
+package me.goudham.model;
 
 public class MyClipboardContent<T> {
 	private T content;
