@@ -39,7 +39,8 @@ public class ClipboardListener extends Thread implements ClipboardOwner {
     }
 
     public void run() {
-        Transferable transferable = clipboard.getContents(this);
+        Transferable transferable = clipboard.getContents(currentThread());
+        processContents(transferable);
         regainOwnership(clipboard, transferable);
     }
 
