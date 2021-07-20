@@ -1,9 +1,5 @@
 package me.goudham;
 
-import me.goudham.listener.ClipboardEvent;
-import me.goudham.model.MyClipboardContent;
-import org.jetbrains.annotations.NotNull;
-
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -12,6 +8,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import me.goudham.listener.ClipboardEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class ClipboardListener extends Thread implements ClipboardOwner {
     private final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -33,23 +31,28 @@ public class ClipboardListener extends Thread implements ClipboardOwner {
     }
 
     public void processContents(Clipboard oldClipboard, Transferable newClipboardContents) {
-        MyClipboardContent<?> clipboardContent = null;
-
         try {
             if (oldClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor)) {
-                    String stringContent = (String) newClipboardContents.getTransferData(DataFlavor.stringFlavor);
-                    clipboardContent = new MyClipboardContent<>(stringContent);
-                } else if (oldClipboard.isDataFlavorAvailable(DataFlavor.imageFlavor)) {
-                    Image imageContent = (Image) newClipboardContents.getTransferData(DataFlavor.imageFlavor);
-                    clipboardContent = new MyClipboardContent<>(imageContent);
-                }
+                String stringContent = (String) newClipboardContents.getTransferData(DataFlavor.stringFlavor);
+                clipboardEvent.onCopyString(stringContent);
+            } else if (oldClipboard.isDataFlavorAvailable(DataFlavor.imageFlavor)) {
+                Image imageContent = (Image) newClipboardContents.getTransferData(DataFlavor.imageFlavor);
+                clipboardEvent.onCopyImage(imageContent);
+            }
         } catch (UnsupportedFlavorException | IOException ignored) { }
-
-        clipboardEvent.onCopy(clipboardContent);
     }
 
     public void regainOwnership(Clipboard clipboard, Transferable newClipboardContents) {
-        clipboard.setContents(newClipboardContents, this);
+        try {
+            clipboard.setContents(newClipboardContents, this);
+        } catch (IllegalStateException ise) {
+            try {
+                sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            regainOwnership(clipboard, newClipboardContents);
+        }
     }
 
     public void run() {
