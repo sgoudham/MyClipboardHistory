@@ -1,7 +1,8 @@
 package me.goudham.listener;
 
-import me.goudham.model.MyClipboardContent;
+import java.awt.Image;
 
 public interface ClipboardEvent {
-	<T> void onCopy(MyClipboardContent<T> copiedContent);
+	void onCopyString(String stringContent);
+	void onCopyImage(Image imageContent);
 }
