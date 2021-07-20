@@ -1,5 +1,7 @@
 package me.goudham.model;
 
+import java.awt.Image;
+
 public class MyClipboardContent<T> {
 	private T content;
 
@@ -13,5 +15,9 @@ public class MyClipboardContent<T> {
 
 	public T getContent() {
 		return content;
+	}
+
+	public Image getImage() {
+		return (Image) content;
 	}
 }
