@@ -2,6 +2,7 @@ package me.goudham.view;
 
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -99,7 +100,11 @@ public class ClipboardView implements ClipboardEvent {
     }
 
     @Override
-    public void onCopyImage(Image imageContent) {
-        imageIconLabel.setIcon(new ImageIcon(new ImageIcon(imageContent).getImage().getScaledInstance(500, 250, Image.SCALE_SMOOTH)));
+    public void onCopyImage(BufferedImage imageContent) {
+        if (imageContent.getWidth() > 1000 || imageContent.getHeight() > 500) {
+            imageIconLabel.setIcon(new ImageIcon(new ImageIcon(imageContent).getImage().getScaledInstance(1000, 300, Image.SCALE_SMOOTH)));
+        } else {
+            imageIconLabel.setIcon(new ImageIcon(imageContent));
+        }
     }
 }
