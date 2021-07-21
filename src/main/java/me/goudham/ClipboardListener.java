@@ -1,10 +1,6 @@
 package me.goudham;
 
-import me.goudham.listener.ClipboardEvent;
-import me.goudham.model.MyClipboardContent;
-import org.jetbrains.annotations.NotNull;
-
-import java.awt.HeadlessException;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -12,10 +8,18 @@ import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import me.goudham.listener.ClipboardEvent;
+import me.goudham.model.MyClipboardContent;
+import me.goudham.util.ClipboardUtils;
+import org.jetbrains.annotations.NotNull;
+
+import static me.goudham.util.Contents.IMAGE;
+import static me.goudham.util.Contents.STRING;
 
 public class ClipboardListener extends Thread implements ClipboardOwner {
     private final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -51,7 +55,7 @@ public class ClipboardListener extends Thread implements ClipboardOwner {
         } catch (UnsupportedFlavorException | IOException ignored) {
         }
 
-        clipboardEvent.onCopy(clipboardContent);
+//        clipboardEvent.onCopy(clipboardContent);
     }
 
     public void regainOwnership(Clipboard clipboard, Transferable newClipboardContents) {
@@ -59,28 +63,33 @@ public class ClipboardListener extends Thread implements ClipboardOwner {
     }
 
     public void run() {
-        Transferable currentClipboardContents = clipboard.getContents(null);
-
-        final MyClipboardContent<String>[] recentContent = new MyClipboardContent[]{new MyClipboardContent<>("")};
-        try {
-            recentContent[0].setContent(currentClipboardContents.getTransferData(DataFlavor.stringFlavor));
-        } catch (UnsupportedFlavorException | IOException e) {
-            e.printStackTrace();
-        }
+        Transferable oldClipboardContents = clipboard.getContents(null);
+        final MyClipboardContent<?>[] myOldClipboardContentsArray = new MyClipboardContent[]{ ClipboardUtils.getClipboardContents(oldClipboardContents, clipboard) };
 
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(() -> {
+            Transferable newClipboardContents = clipboard.getContents(null);
+            MyClipboardContent<?> myNewClipboardContents = new MyClipboardContent<>("");
+
             try {
-                Transferable newClipboard = clipboard.getContents(null);
-                String data = (String) newClipboard.getTransferData(DataFlavor.stringFlavor);
-                if (!data.equals(recentContent[0].getContent())) {
-                    clipboardEvent.onCopy(new MyClipboardContent<>(data));
-                    recentContent[0].setContent(data);
+                if (STRING.isAvailable(clipboard)) {
+                    myNewClipboardContents.setContent(newClipboardContents.getTransferData(STRING.getDataFlavor()));
+                    if (!myNewClipboardContents.getContent().equals(myOldClipboardContentsArray[0].getContent())) {
+                        clipboardEvent.onCopyString((String) myNewClipboardContents.getContent());
+                        myOldClipboardContentsArray[0].setContent(myNewClipboardContents.getContent());
+                    }
+                } else if (IMAGE.isAvailable(clipboard)) {
+                    BufferedImage bufferedImage = ClipboardUtils.convertToBufferedImage((Image) newClipboardContents.getTransferData(IMAGE.getDataFlavor()));
+                    myNewClipboardContents.setContent(new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight()));
+                    if (!myNewClipboardContents.getContent().equals(myOldClipboardContentsArray[0].getContent())) {
+                        clipboardEvent.onCopyImage(bufferedImage);
+                        myOldClipboardContentsArray[0].setContent(myNewClipboardContents.getContent());
+                    }
                 }
-            } catch (HeadlessException | IOException | UnsupportedFlavorException e) {
-                e.printStackTrace();
+            } catch (UnsupportedFlavorException | IOException exp) {
+                exp.printStackTrace();
             }
-        }, 0, 200, TimeUnit.MILLISECONDS);
+        }, 0, 350, TimeUnit.MILLISECONDS);
     }
 
     public void setClipboardEvent(@NotNull ClipboardEvent clipboardEvent) {
