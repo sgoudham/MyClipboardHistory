@@ -22,34 +22,30 @@ public class ClipboardView implements ClipboardEvent {
     private JList<String> clipboardContentList;
     private final DefaultListModel<String> listModel;
     private JLabel title;
-    private JScrollPane scrollPane;
-    private JPanel buttonPane;
+    private JPanel textButtonPanel;
     private JButton clearAllHistoryButton;
     private JButton removeButton;
-    private JLabel imageIconLabel;
-    private JLabel textClipboardLabel;
     private JButton copyImageBelowButton;
     private JButton removeImageBelowButton;
     private JPanel imageButtonPanel;
     private JButton toggleImageButton;
-    private JScrollPane anotherImagePanel;
-    private JList<String> list1;
-    private JLabel yetAnotherImageIcon;
+    private JLabel imageLabel;
+    private JScrollPane imageScrollPane;
+    private JScrollPane clipboardContentScrollPane;
 
     private boolean toggle = true;
     private BufferedImage storedImageContent;
 
     public ClipboardView() {
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        anotherImagePanel.setBorder(BorderFactory.createEmptyBorder());
-        buttonPane.setBorder(BorderFactory.createEmptyBorder());
+        imageScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        clipboardContentScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        textButtonPanel.setBorder(BorderFactory.createEmptyBorder());
         listModel = new DefaultListModel<>();
         clipboardContentList.setModel(listModel);
-        list1.setModel(listModel);
 
         toggleImageButton.addActionListener(actionEvent -> {
             if (toggle) {
-                yetAnotherImageIcon.setIcon(null);
+                imageLabel.setIcon(null);
 //                anotherImagePanel.setPreferredSize(null);
 //                anotherImagePanel.setVisible(false);
 //                imageIconLabel.setMaximumSize(new Dimension(0, 0));
@@ -58,7 +54,7 @@ public class ClipboardView implements ClipboardEvent {
             } else {
 //                anotherImagePanel.setPreferredSize(new Dimension(300, 300));
 //                anotherImagePanel.setVisible(true);
-                yetAnotherImageIcon.setIcon(new ImageIcon(storedImageContent));
+                imageLabel.setIcon(new ImageIcon(storedImageContent));
                 toggle = true;
             }
 //            anotherImagePanel.revalidate();
@@ -135,7 +131,7 @@ public class ClipboardView implements ClipboardEvent {
     public void onCopyImage(BufferedImage imageContent) {
         storedImageContent = imageContent;
 //        anotherImagePanel.setMinimumSize(new Dimension(300, 300));
-        yetAnotherImageIcon.setIcon(new ImageIcon(imageContent));
+        imageLabel.setIcon(new ImageIcon(imageContent));
         toggle = true;
 //
 //        if (imageContent.getWidth() > 1000 || imageContent.getHeight() > 1000) {
