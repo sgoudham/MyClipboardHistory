@@ -26,7 +26,7 @@
       </component>
       <scrollpane id="1de68" binding="scrollPane">
         <constraints>
-          <grid row="6" column="0" row-span="2" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="7" column="0" row-span="2" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <gridbag top="10" left="10" bottom="10" right="10" weightx="1.0" weighty="1.0"/>
         </constraints>
         <properties>
@@ -59,8 +59,8 @@
       <grid id="a7b09" binding="buttonPane" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="10" bottom="0" right="10"/>
         <constraints>
-          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag top="5" left="0" bottom="0" right="0" weightx="1.0" weighty="0.0"/>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <gridbag top="5" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
           <background color="-16710887"/>
@@ -103,8 +103,8 @@
       </grid>
       <component id="f6be9" class="javax.swing.JLabel">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-          <gridbag top="5" left="0" bottom="5" right="0" weightx="1.0" weighty="0.0"/>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag top="5" left="0" bottom="5" right="0" weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
           <font name="Berlin Sans FB Demi" size="24" style="1"/>
@@ -114,8 +114,8 @@
       </component>
       <component id="12b73" class="javax.swing.JLabel" binding="textClipboardLabel">
         <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-          <gridbag top="5" left="0" bottom="5" right="0" weightx="1.0" weighty="0.0"/>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag top="5" left="0" bottom="5" right="0" weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
           <font name="Berlin Sans FB Demi" size="24" style="1"/>
@@ -126,8 +126,8 @@
       <grid id="865e3" binding="imageButtonPanel" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="10" bottom="10" right="10"/>
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="1.0" weighty="0.0"/>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
           <background color="-16710887"/>
@@ -162,8 +162,8 @@
       </grid>
       <scrollpane id="6714a" binding="anotherImagePanel">
         <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag top="5" left="5" bottom="5" right="5" weightx="1.0" weighty="1.0"/>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
           <background color="-16710887"/>
@@ -185,6 +185,68 @@
           </component>
         </children>
       </scrollpane>
+      <splitpane id="a64a3">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <autoscrolls value="true"/>
+          <background color="-16710887"/>
+          <continuousLayout value="true"/>
+          <foreground color="-16710887"/>
+          <oneTouchExpandable value="true"/>
+          <opaque value="true"/>
+          <orientation value="0"/>
+          <preferredSize width="300" height="300"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="fc284" class="javax.swing.JList" binding="list1" default-binding="true">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties>
+              <background color="-16710887"/>
+              <font name="JetBrains Mono" size="18" style="1"/>
+              <foreground color="-1"/>
+              <minimumSize width="0" height="0"/>
+              <model/>
+              <opaque value="false"/>
+              <requestFocusEnabled value="false"/>
+            </properties>
+          </component>
+          <scrollpane id="681c6">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties>
+              <background color="-16710887"/>
+              <foreground color="-16710887"/>
+              <opaque value="false"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="a0714" class="javax.swing.JLabel" binding="yetAnotherImageIcon">
+                <constraints/>
+                <properties>
+                  <autoscrolls value="true"/>
+                  <background color="-16710887"/>
+                  <horizontalAlignment value="0"/>
+                  <horizontalTextPosition value="0"/>
+                  <maximumSize width="0" height="0"/>
+                  <minimumSize width="0" height="0"/>
+                  <opaque value="true"/>
+                  <preferredSize width="0" height="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+        </children>
+      </splitpane>
     </children>
   </grid>
 </form>

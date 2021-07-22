@@ -33,6 +33,8 @@ public class ClipboardView implements ClipboardEvent {
     private JPanel imageButtonPanel;
     private JButton toggleImageButton;
     private JScrollPane anotherImagePanel;
+    private JList<String> list1;
+    private JLabel yetAnotherImageIcon;
 
     private boolean toggle = true;
     private BufferedImage storedImageContent;
@@ -43,21 +45,23 @@ public class ClipboardView implements ClipboardEvent {
         buttonPane.setBorder(BorderFactory.createEmptyBorder());
         listModel = new DefaultListModel<>();
         clipboardContentList.setModel(listModel);
+        list1.setModel(listModel);
 
         toggleImageButton.addActionListener(actionEvent -> {
             if (toggle) {
-                imageIconLabel.setIcon(null);
-//                anotherImagePanel.setPreferredSize(new Dimension(0, 0));
+                yetAnotherImageIcon.setIcon(null);
+//                anotherImagePanel.setPreferredSize(null);
 //                anotherImagePanel.setVisible(false);
 //                imageIconLabel.setMaximumSize(new Dimension(0, 0));
 //                anotherImagePanel.setPreferredSize(new Dimension(0, 0));
                 toggle = false;
             } else {
 //                anotherImagePanel.setPreferredSize(new Dimension(300, 300));
-                imageIconLabel.setIcon(new ImageIcon(storedImageContent));
 //                anotherImagePanel.setVisible(true);
+                yetAnotherImageIcon.setIcon(new ImageIcon(storedImageContent));
                 toggle = true;
             }
+//            anotherImagePanel.revalidate();
         });
 
 //        final java.awt.datatransfer.clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -130,7 +134,8 @@ public class ClipboardView implements ClipboardEvent {
     @Override
     public void onCopyImage(BufferedImage imageContent) {
         storedImageContent = imageContent;
-        imageIconLabel.setIcon(new ImageIcon(imageContent));
+//        anotherImagePanel.setMinimumSize(new Dimension(300, 300));
+        yetAnotherImageIcon.setIcon(new ImageIcon(imageContent));
         toggle = true;
 //
 //        if (imageContent.getWidth() > 1000 || imageContent.getHeight() > 1000) {
