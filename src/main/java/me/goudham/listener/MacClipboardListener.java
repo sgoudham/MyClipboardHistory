@@ -13,42 +13,41 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import me.goudham.model.MyClipboardContent;
 import me.goudham.util.ClipboardUtils;
-import org.jetbrains.annotations.NotNull;
 
 import static me.goudham.model.Contents.IMAGE;
 import static me.goudham.model.Contents.STRING;
 
-public class MacClipboardListener implements ClipboardListener {
+public class MacClipboardListener extends ClipboardListener {
     private final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-    private final @NotNull ClipboardEvent clipboardEvent;
 
-    public MacClipboardListener(@NotNull ClipboardEvent clipboardEvent) {
-        this.clipboardEvent = clipboardEvent;
-    }
+    public MacClipboardListener() { }
 
     @Override
     public void execute() {
         Transferable oldClipboardContents = clipboard.getContents(null);
-        final MyClipboardContent<?>[] myOldClipboardContentsArray = new MyClipboardContent[]{ ClipboardUtils.getClipboardContents(oldClipboardContents, clipboard) };
+        final MyClipboardContent<?, ?>[] myClipboardContents = new MyClipboardContent[]{ ClipboardUtils.getClipboardContents(oldClipboardContents, clipboard) };
 
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(() -> {
             Transferable newClipboardContents = clipboard.getContents(null);
-            MyClipboardContent<?> myNewClipboardContents = new MyClipboardContent<>("");
 
             try {
                 if (STRING.isAvailable(clipboard)) {
-                    myNewClipboardContents.setContent(newClipboardContents.getTransferData(STRING.getDataFlavor()));
-                    if (!myNewClipboardContents.getContent().equals(myOldClipboardContentsArray[0].getContent())) {
-                        clipboardEvent.onCopyString((String) myNewClipboardContents.getContent());
-                        myOldClipboardContentsArray[0].setContent(myNewClipboardContents.getContent());
+                    myClipboardContents[0].setNewContent(newClipboardContents.getTransferData(STRING.getDataFlavor()));
+                    if (!myClipboardContents[0].getNewContent().equals(myClipboardContents[0].getOldContent())) {
+                        for (ClipboardEvent clipboardEvent : eventsListener) {
+                            clipboardEvent.onCopyString((String) myClipboardContents[0].getNewContent());
+                        }
+                        myClipboardContents[0].setOldContent(myClipboardContents[0].getNewContent());
                     }
                 } else if (IMAGE.isAvailable(clipboard)) {
                     BufferedImage bufferedImage = ClipboardUtils.convertToBufferedImage((Image) newClipboardContents.getTransferData(IMAGE.getDataFlavor()));
-                    myNewClipboardContents.setContent(new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight()));
-                    if (!myNewClipboardContents.getContent().equals(myOldClipboardContentsArray[0].getContent())) {
-                        clipboardEvent.onCopyImage(bufferedImage);
-                        myOldClipboardContentsArray[0].setContent(myNewClipboardContents.getContent());
+                    myClipboardContents[0].setNewContent(new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight()));
+                    if (!myClipboardContents[0].getNewContent().equals(myClipboardContents[0].getOldContent())) {
+                        for (ClipboardEvent clipboardEvent : eventsListener) {
+                            clipboardEvent.onCopyImage(bufferedImage);
+                        }
+                        myClipboardContents[0].setOldContent(myClipboardContents[0].getNewContent());
                     }
                 }
             } catch (UnsupportedFlavorException | IOException exp) {

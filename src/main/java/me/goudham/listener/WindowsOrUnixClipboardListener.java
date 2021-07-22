@@ -10,15 +10,14 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import me.goudham.util.ClipboardUtils;
-import org.jetbrains.annotations.NotNull;
 
-public class WindowsOrUnixClipboardListener extends Thread implements ClipboardListener, ClipboardOwner {
+import static java.lang.Thread.currentThread;
+import static java.lang.Thread.sleep;
+
+public class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnable, ClipboardOwner {
     private final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-    private final @NotNull ClipboardEvent clipboardEvent;
 
-    public WindowsOrUnixClipboardListener(@NotNull ClipboardEvent clipboardEvent) {
-        this.clipboardEvent = clipboardEvent;
-    }
+    public WindowsOrUnixClipboardListener() { }
 
     @Override
     public void lostOwnership(Clipboard oldClipboard, Transferable oldClipboardContents) {
@@ -36,10 +35,14 @@ public class WindowsOrUnixClipboardListener extends Thread implements ClipboardL
         try {
             if (oldClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor)) {
                 String stringContent = (String) newClipboardContents.getTransferData(DataFlavor.stringFlavor);
-                clipboardEvent.onCopyString(stringContent);
+                for (ClipboardEvent clipboardEvent : eventsListener) {
+                    clipboardEvent.onCopyString(stringContent);
+                }
             } else if (oldClipboard.isDataFlavorAvailable(DataFlavor.imageFlavor)) {
                 BufferedImage imageContent = ClipboardUtils.convertToBufferedImage((Image) newClipboardContents.getTransferData(DataFlavor.imageFlavor));
-                clipboardEvent.onCopyImage(imageContent);
+                for (ClipboardEvent clipboardEvent : eventsListener) {
+                    clipboardEvent.onCopyImage(imageContent);
+                }
             }
         } catch (UnsupportedFlavorException | IOException ignored) {
         }
@@ -59,9 +62,14 @@ public class WindowsOrUnixClipboardListener extends Thread implements ClipboardL
     }
 
     @Override
-    public void execute() {
+    public void run() {
         Transferable currentClipboardContents = clipboard.getContents(null);
         processContents(clipboard, currentClipboardContents);
         regainOwnership(clipboard, currentClipboardContents);
+    }
+
+    @Override
+    public void execute() {
+        run();
     }
 }
