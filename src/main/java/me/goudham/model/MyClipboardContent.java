@@ -5,6 +5,10 @@ import java.util.Objects;
 public class MyClipboardContent<T> {
     private T content;
 
+    public MyClipboardContent() {
+
+    }
+
     public MyClipboardContent(T content) {
         this.content = content;
     }
