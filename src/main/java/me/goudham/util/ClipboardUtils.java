@@ -10,8 +10,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import me.goudham.model.MyClipboardContent;
 
-import static me.goudham.util.Contents.IMAGE;
-import static me.goudham.util.Contents.STRING;
+import static me.goudham.model.Contents.IMAGE;
+import static me.goudham.model.Contents.STRING;
 
 public class ClipboardUtils {
 
