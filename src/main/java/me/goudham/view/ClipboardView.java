@@ -1,6 +1,9 @@
 package me.goudham.view;
 
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -11,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import me.goudham.listener.ClipboardEvent;
 import me.goudham.listener.ClipboardListener;
 import me.goudham.listener.MacClipboardListener;
@@ -22,6 +26,7 @@ public class ClipboardView {
     private JButton copySelectedTextButton;
     private JList<String> clipboardContentList;
     private final DefaultListModel<String> listModel = new DefaultListModel<>();
+    private ListSelectionModel listSelectionModel = clipboardContentList.getSelectionModel();
     private JLabel title;
     private JPanel textButtonPanel;
     private JButton clearAllHistoryButton;
@@ -45,6 +50,7 @@ public class ClipboardView {
         clipboardContentScrollPane.getVerticalScrollBar().setUnitIncrement(200);
         clipboardContentScrollPane.getHorizontalScrollBar().setUnitIncrement(200);
         clipboardContentList.setModel(listModel);
+        listSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         toggleImageButton.addActionListener(actionEvent -> {
             if (storedImageContent != null) {
@@ -60,45 +66,13 @@ public class ClipboardView {
             }
         });
 
-//        final java.awt.datatransfer.clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-//        final MyClipboardContent<?> previousContent = new MyClipboardContent<>("");
-//        final int[] count = {0};
-//
-//        systemClipboard.addFlavorListener(e -> {
-//            MyClipboardContent<?> clipboardContent = null;
-//            try {
-//                if (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor)) {
-//                    String stringContent = (String) systemClipboard.getData(DataFlavor.stringFlavor);
-//                    clipboardContent = new MyClipboardContent<>(stringContent);
-//                } else if (systemClipboard.isDataFlavorAvailable(DataFlavor.imageFlavor)) {
-//                    Image imageContent = (Image) systemClipboard.getData(DataFlavor.imageFlavor);
-//                    clipboardContent = new MyClipboardContent<>(imageContent);
-//                }
-//            } catch (UnsupportedFlavorException | IOException unsupportedFlavorException) {
-//                unsupportedFlavorException.printStackTrace();
-//            }
-//
-//            if (previousContent.getContent().equals(clipboardContent.getContent())) {
-//                count[0]++;
-//            }
-//
-//            if (!previousContent.getContent().equals(clipboardContent.getContent()) || count[0] > 1) {
-//                systemClipboard.setContents(new TransferableImage((Image) clipboardContent.getContent()), null);
-////					systemClipboard.setContents(new StringSelection((String) clipboardContent.getContent()), null);
-//                System.out.println("The clipboard contains: " + clipboardContent.getContent());
-//
-//                DefaultListModel<String> demoList = new DefaultListModel<>();
-//                int size = clipboardContentList.getModel().getSize();
-//                demoList.addElement("0. " + clipboardContent.getContent());
-//                for (int i = 0; i < size; i++) {
-//                    demoList.addElement((i + 1) + ". " + clipboardContentList.getModel().getElementAt(i));
-//                }
-//                clipboardContentList.setModel(demoList);
-//
-//                previousContent.setContent(clipboardContent.getContent());
-//                count[0] = 0;
-//            }
-//        });
+        copySelectedTextButton.addActionListener(actionEvent -> {
+            String selectedValue = clipboardContentList.getSelectedValue();
+            int selectedIndex = clipboardContentList.getSelectedIndex();
+            listModel.remove(selectedIndex);
+            Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            systemClipboard.setContents(new StringSelection(selectedValue), null);
+        });
     }
 
     public void createAndShowGUI() {
