@@ -1,7 +1,6 @@
 package me.goudham.view;
 
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -12,11 +11,13 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import me.goudham.ClipboardListener;
 import me.goudham.listener.ClipboardEvent;
+import me.goudham.listener.MacClipboardListener;
+import me.goudham.listener.WindowsOrUnixClipboardListener;
+import org.apache.commons.lang3.SystemUtils;
 
 public class ClipboardView implements ClipboardEvent {
-    private JPanel Clipboard;
+    private JPanel clipboard;
     private JButton copySelectedTextButton;
     private JList<String> clipboardContentList;
     private final DefaultListModel<String> listModel;
@@ -30,15 +31,36 @@ public class ClipboardView implements ClipboardEvent {
     private JButton copyImageBelowButton;
     private JButton removeImageBelowButton;
     private JPanel imageButtonPanel;
-    private JPanel imagePanel;
+    private JButton toggleImageButton;
+    private JScrollPane anotherImagePanel;
+
+    private boolean toggle = true;
+    private BufferedImage storedImageContent;
 
     public ClipboardView() {
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        anotherImagePanel.setBorder(BorderFactory.createEmptyBorder());
         buttonPane.setBorder(BorderFactory.createEmptyBorder());
         listModel = new DefaultListModel<>();
         clipboardContentList.setModel(listModel);
 
-//        final java.awt.datatransfer.Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        toggleImageButton.addActionListener(actionEvent -> {
+            if (toggle) {
+                imageIconLabel.setIcon(null);
+//                anotherImagePanel.setPreferredSize(new Dimension(0, 0));
+//                anotherImagePanel.setVisible(false);
+//                imageIconLabel.setMaximumSize(new Dimension(0, 0));
+//                anotherImagePanel.setPreferredSize(new Dimension(0, 0));
+                toggle = false;
+            } else {
+//                anotherImagePanel.setPreferredSize(new Dimension(300, 300));
+                imageIconLabel.setIcon(new ImageIcon(storedImageContent));
+//                anotherImagePanel.setVisible(true);
+                toggle = true;
+            }
+        });
+
+//        final java.awt.datatransfer.clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 //        final MyClipboardContent<?> previousContent = new MyClipboardContent<>("");
 //        final int[] count = {0};
 //
@@ -80,11 +102,17 @@ public class ClipboardView implements ClipboardEvent {
     }
 
     public void createAndShowGUI() {
-        new ClipboardListener(this).start();
+        me.goudham.listener.ClipboardListener clipboardListener = null;
+        if (isMac()) {
+            clipboardListener = new MacClipboardListener(this);
+        } else if (isUnix() || isWindows()) {
+            clipboardListener = new WindowsOrUnixClipboardListener(this);
+        }
+        clipboardListener.execute();
 
         JFrame jFrame = new JFrame();
         jFrame.setTitle("My Clipboard History");
-        jFrame.setContentPane(Clipboard);
+        jFrame.setContentPane(clipboard);
         jFrame.setVisible(true);
         jFrame.setAlwaysOnTop(true);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,10 +129,26 @@ public class ClipboardView implements ClipboardEvent {
 
     @Override
     public void onCopyImage(BufferedImage imageContent) {
-        if (imageContent.getWidth() > 1000 || imageContent.getHeight() > 500) {
-            imageIconLabel.setIcon(new ImageIcon(new ImageIcon(imageContent).getImage().getScaledInstance(1000, 300, Image.SCALE_SMOOTH)));
-        } else {
-            imageIconLabel.setIcon(new ImageIcon(imageContent));
-        }
+        storedImageContent = imageContent;
+        imageIconLabel.setIcon(new ImageIcon(imageContent));
+        toggle = true;
+//
+//        if (imageContent.getWidth() > 1000 || imageContent.getHeight() > 1000) {
+//            imageIconLabel.setIcon(new ImageIcon(new ImageIcon(imageContent).getImage().getScaledInstance(1000, 600, Image.SCALE_SMOOTH)));
+//        } else {
+//            imageIconLabel.setIcon(new ImageIcon(imageContent));
+//        }
+    }
+
+    private boolean isMac() {
+        return SystemUtils.IS_OS_MAC;
+    }
+
+    private boolean isUnix() {
+        return SystemUtils.IS_OS_UNIX || SystemUtils.IS_OS_LINUX;
+    }
+
+    private boolean isWindows() {
+        return SystemUtils.IS_OS_WINDOWS;
     }
 }

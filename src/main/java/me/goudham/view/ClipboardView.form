@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="me.goudham.view.ClipboardView">
-  <grid id="27dc6" binding="Clipboard" layout-manager="GridBagLayout">
+  <grid id="27dc6" binding="clipboard" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="20" y="20" width="641" height="499"/>
+      <xy x="20" y="20" width="641" height="794"/>
     </constraints>
     <properties>
       <background color="-16710887"/>
@@ -60,7 +60,7 @@
         <margin top="0" left="10" bottom="0" right="10"/>
         <constraints>
           <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag top="5" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+          <gridbag top="5" left="0" bottom="0" right="0" weightx="1.0" weighty="0.0"/>
         </constraints>
         <properties>
           <background color="-16710887"/>
@@ -101,31 +101,10 @@
           </component>
         </children>
       </grid>
-      <grid id="eb90f" binding="imagePanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="5" bottom="0" right="5"/>
-        <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
-        </constraints>
-        <properties>
-          <background color="-16710887"/>
-        </properties>
-        <border type="none"/>
-        <children>
-          <component id="d4095" class="javax.swing.JLabel" binding="imageIconLabel">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value=""/>
-            </properties>
-          </component>
-        </children>
-      </grid>
       <component id="f6be9" class="javax.swing.JLabel">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-          <gridbag top="5" left="0" bottom="5" right="0" weightx="0.0" weighty="0.0"/>
+          <gridbag top="5" left="0" bottom="5" right="0" weightx="1.0" weighty="0.0"/>
         </constraints>
         <properties>
           <font name="Berlin Sans FB Demi" size="24" style="1"/>
@@ -136,7 +115,7 @@
       <component id="12b73" class="javax.swing.JLabel" binding="textClipboardLabel">
         <constraints>
           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-          <gridbag top="5" left="0" bottom="5" right="0" weightx="0.0" weighty="0.0"/>
+          <gridbag top="5" left="0" bottom="5" right="0" weightx="1.0" weighty="0.0"/>
         </constraints>
         <properties>
           <font name="Berlin Sans FB Demi" size="24" style="1"/>
@@ -144,11 +123,11 @@
           <text value="Text History"/>
         </properties>
       </component>
-      <grid id="865e3" binding="imageButtonPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="865e3" binding="imageButtonPanel" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="10" bottom="10" right="10"/>
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
+          <gridbag weightx="1.0" weighty="0.0"/>
         </constraints>
         <properties>
           <background color="-16710887"/>
@@ -165,14 +144,47 @@
           </component>
           <component id="b16b7" class="javax.swing.JButton" binding="removeImageBelowButton" default-binding="true">
             <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Remove Image Below"/>
             </properties>
           </component>
+          <component id="6b15e" class="javax.swing.JButton" binding="toggleImageButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Toggle Image"/>
+            </properties>
+          </component>
         </children>
       </grid>
+      <scrollpane id="6714a" binding="anotherImagePanel">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <gridbag top="5" left="5" bottom="5" right="5" weightx="1.0" weighty="1.0"/>
+        </constraints>
+        <properties>
+          <background color="-16710887"/>
+          <foreground color="-16710887"/>
+          <opaque value="false"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="d4095" class="javax.swing.JLabel" binding="imageIconLabel">
+            <constraints/>
+            <properties>
+              <autoscrolls value="true"/>
+              <background color="-16710887"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <opaque value="true"/>
+              <text value=""/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
     </children>
   </grid>
 </form>
