@@ -6,8 +6,6 @@ import java.util.List;
 public abstract class ClipboardListener {
     List<ClipboardEvent> eventsListener = new ArrayList<>();
 
-    public abstract void execute();
-
     public void addEventListener(ClipboardEvent clipboardEvent) {
         if (!eventsListener.contains(clipboardEvent)) {
             eventsListener.add(clipboardEvent);
@@ -17,4 +15,6 @@ public abstract class ClipboardListener {
     public void removeEventListener(ClipboardEvent clipboardEvent) {
         eventsListener.remove(clipboardEvent);
     }
+
+    public abstract void execute();
 }
