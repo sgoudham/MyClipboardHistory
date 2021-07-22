@@ -1,4 +1,4 @@
-package me.goudham.util;
+package me.goudham.model;
 
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
