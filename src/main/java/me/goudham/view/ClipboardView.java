@@ -12,15 +12,16 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import me.goudham.listener.ClipboardEvent;
+import me.goudham.listener.ClipboardListener;
 import me.goudham.listener.MacClipboardListener;
 import me.goudham.listener.WindowsOrUnixClipboardListener;
 import org.apache.commons.lang3.SystemUtils;
 
-public class ClipboardView implements ClipboardEvent {
+public class ClipboardView {
     private JPanel clipboard;
     private JButton copySelectedTextButton;
     private JList<String> clipboardContentList;
-    private final DefaultListModel<String> listModel;
+    private final DefaultListModel<String> listModel = new DefaultListModel<>();
     private JLabel title;
     private JPanel textButtonPanel;
     private JButton clearAllHistoryButton;
@@ -35,29 +36,28 @@ public class ClipboardView implements ClipboardEvent {
 
     private boolean toggle = true;
     private BufferedImage storedImageContent;
+    private ClipboardListener clipboardListener;
 
     public ClipboardView() {
-        imageScrollPane.setBorder(BorderFactory.createEmptyBorder());
         clipboardContentScrollPane.setBorder(BorderFactory.createEmptyBorder());
-        textButtonPanel.setBorder(BorderFactory.createEmptyBorder());
-        listModel = new DefaultListModel<>();
+        imageScrollPane.getVerticalScrollBar().setUnitIncrement(35);
+        imageScrollPane.getHorizontalScrollBar().setUnitIncrement(35);
+        clipboardContentScrollPane.getVerticalScrollBar().setUnitIncrement(200);
+        clipboardContentScrollPane.getHorizontalScrollBar().setUnitIncrement(200);
         clipboardContentList.setModel(listModel);
 
         toggleImageButton.addActionListener(actionEvent -> {
-            if (toggle) {
-                imageLabel.setIcon(null);
-//                anotherImagePanel.setPreferredSize(null);
-//                anotherImagePanel.setVisible(false);
-//                imageIconLabel.setMaximumSize(new Dimension(0, 0));
-//                anotherImagePanel.setPreferredSize(new Dimension(0, 0));
-                toggle = false;
-            } else {
-//                anotherImagePanel.setPreferredSize(new Dimension(300, 300));
-//                anotherImagePanel.setVisible(true);
-                imageLabel.setIcon(new ImageIcon(storedImageContent));
-                toggle = true;
+            if (storedImageContent != null) {
+                if (toggle) {
+                    toggleImageButton.setText("Show Image");
+                    imageLabel.setIcon(null);
+                    toggle = false;
+                } else {
+                    imageLabel.setIcon(new ImageIcon(storedImageContent));
+                    toggleImageButton.setText("Hide Image");
+                    toggle = true;
+                }
             }
-//            anotherImagePanel.revalidate();
         });
 
 //        final java.awt.datatransfer.clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -102,13 +102,27 @@ public class ClipboardView implements ClipboardEvent {
     }
 
     public void createAndShowGUI() {
-        me.goudham.listener.ClipboardListener clipboardListener = null;
         if (isMac()) {
-            clipboardListener = new MacClipboardListener(this);
+            clipboardListener = new MacClipboardListener();
         } else if (isUnix() || isWindows()) {
-            clipboardListener = new WindowsOrUnixClipboardListener(this);
+            clipboardListener = new WindowsOrUnixClipboardListener();
         }
         clipboardListener.execute();
+
+        clipboardListener.addEventListener(new ClipboardEvent() {
+            @Override
+            public void onCopyString(String stringContent) {
+                listModel.add(0, stringContent);
+            }
+
+            @Override
+            public void onCopyImage(BufferedImage imageContent) {
+                storedImageContent = imageContent;
+                imageLabel.setIcon(new ImageIcon(imageContent));
+                toggleImageButton.setText("Hide Image");
+                toggle = true;
+            }
+        });
 
         JFrame jFrame = new JFrame();
         jFrame.setTitle("My Clipboard History");
@@ -120,25 +134,6 @@ public class ClipboardView implements ClipboardEvent {
         jFrame.setResizable(true);
         jFrame.pack();
         jFrame.setLocationRelativeTo(null);
-    }
-
-    @Override
-    public void onCopyString(String stringContent) {
-        listModel.add(0, stringContent);
-    }
-
-    @Override
-    public void onCopyImage(BufferedImage imageContent) {
-        storedImageContent = imageContent;
-//        anotherImagePanel.setMinimumSize(new Dimension(300, 300));
-        imageLabel.setIcon(new ImageIcon(imageContent));
-        toggle = true;
-//
-//        if (imageContent.getWidth() > 1000 || imageContent.getHeight() > 1000) {
-//            imageIconLabel.setIcon(new ImageIcon(new ImageIcon(imageContent).getImage().getScaledInstance(1000, 600, Image.SCALE_SMOOTH)));
-//        } else {
-//            imageIconLabel.setIcon(new ImageIcon(imageContent));
-//        }
     }
 
     private boolean isMac() {

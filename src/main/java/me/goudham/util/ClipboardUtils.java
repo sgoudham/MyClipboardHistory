@@ -15,15 +15,15 @@ import static me.goudham.model.Contents.STRING;
 
 public class ClipboardUtils {
 
-    public static MyClipboardContent<?> getClipboardContents(Transferable contents, Clipboard clipboard) {
-        MyClipboardContent<?> myClipboardContent = new MyClipboardContent<>("");
+    public static MyClipboardContent<?, ?> getClipboardContents(Transferable contents, Clipboard clipboard) {
+        MyClipboardContent<?, ?> myClipboardContent = new MyClipboardContent<>();
 
         try {
             if (STRING.isAvailable(clipboard)) {
-                myClipboardContent.setContent(contents.getTransferData(STRING.getDataFlavor()));
+                myClipboardContent.setOldContent(contents.getTransferData(STRING.getDataFlavor()));
             } else if (IMAGE.isAvailable(clipboard)) {
                 BufferedImage bufferedImage = convertToBufferedImage((Image) contents.getTransferData(IMAGE.getDataFlavor()));
-                myClipboardContent.setContent(new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight()));
+                myClipboardContent.setOldContent(new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight()));
             }
         } catch (UnsupportedFlavorException | IOException exp) {
             exp.printStackTrace();
