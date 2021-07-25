@@ -21,15 +21,15 @@
         </constraints>
         <properties>
           <autoscrolls value="true"/>
-          <background color="-16710887"/>
+          <background color="-263169"/>
           <continuousLayout value="true"/>
-          <foreground color="-16710887"/>
+          <foreground color="-263169"/>
           <oneTouchExpandable value="true"/>
           <opaque value="true"/>
-          <orientation value="0"/>
+          <orientation value="1"/>
           <preferredSize width="300" height="250"/>
         </properties>
-        <border type="none"/>
+        <border type="etched"/>
         <children>
           <scrollpane id="681c6" binding="imageScrollPane">
             <constraints>
@@ -47,7 +47,7 @@
               <preferredSize width="300" height="300"/>
               <verticalScrollBarPolicy value="20"/>
             </properties>
-            <border type="none"/>
+            <border type="empty"/>
             <children>
               <component id="a0714" class="javax.swing.JLabel" binding="imageLabel">
                 <constraints/>
@@ -57,7 +57,7 @@
                   <horizontalAlignment value="0"/>
                   <horizontalTextPosition value="0"/>
                   <opaque value="true"/>
-                  <text value=""/>
+                  <verifyInputWhenFocusTarget value="true"/>
                 </properties>
               </component>
             </children>
@@ -96,7 +96,7 @@
           </scrollpane>
         </children>
       </splitpane>
-      <grid id="865e3" binding="imageButtonPanel" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="865e3" binding="imageButtonPanel" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="true" same-size-vertically="true" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -104,8 +104,7 @@
         </constraints>
         <properties>
           <background color="-16710887"/>
-          <minimumSize width="367" height="30"/>
-          <preferredSize width="367" height="30"/>
+          <preferredSize width="389" height="30"/>
         </properties>
         <border type="none"/>
         <children>
@@ -122,22 +121,21 @@
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <opaque value="true"/>
               <text value="No Image Stored"/>
             </properties>
           </component>
-          <component id="cbf3c" class="javax.swing.JButton" binding="copyImageBelowButton" default-binding="true">
+          <component id="93788" class="javax.swing.JButton" binding="copyImageBelowButton" default-binding="true">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <horizontalTextPosition value="11"/>
-              <preferredSize width="126" height="30"/>
               <text value="Copy Image Below"/>
             </properties>
           </component>
         </children>
       </grid>
-      <grid id="a7b09" binding="textButtonPanel" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="a7b09" binding="textButtonPanel" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="true" same-size-vertically="true" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -145,6 +143,7 @@
         </constraints>
         <properties>
           <background color="-16710887"/>
+          <minimumSize width="471" height="30"/>
           <preferredSize width="389" height="30"/>
         </properties>
         <border type="none"/>
