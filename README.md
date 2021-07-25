@@ -1,4 +1,4 @@
-# MyClipboard
+# MyClipboardHistory
 Simple Java Swing Program to store Clipboard History
 
 # About
