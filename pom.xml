@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.goudham</groupId>
-    <artifactId>MyClipboard</artifactId>
+    <artifactId>MyClipboardHistory</artifactId>
     <version>1.0</version>
-    <name>MyClipboard</name>
+    <name>MyClipboardHistory</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,6 +16,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>me.goudham</groupId>
+            <artifactId>MyClipboard</artifactId>
+            <version>0.1.0</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
