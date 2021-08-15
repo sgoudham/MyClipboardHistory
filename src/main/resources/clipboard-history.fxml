@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<TabPane fx:id="tabPane" prefHeight="529.0" prefWidth="765.0" side="LEFT" style="-fx-background-color: #00000d;" stylesheets="@css/tabPane.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.goudham.ClipboardHistoryController">
+  <tabs>
+    <Tab style="-fx-background-color: #00000d;">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="505.0" prefWidth="301.0">
+               <children>
+                  <ListView fx:id="textList" layoutY="54.0" prefHeight="600.0" prefWidth="645.0" stylesheets="@css/list.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+      </content>
+         <graphic>
+            <ImageView fitHeight="62.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons8-text.png" />
+               </image>
+            </ImageView>
+         </graphic>
+    </Tab>
+    <Tab style="-fx-background-color: #00000d;">
+         <graphic>
+            <ImageView fitHeight="62.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons8-image.png" />
+               </image>
+               <viewport>
+                  <Rectangle2D />
+               </viewport>
+            </ImageView>
+         </graphic>
+         <content>
+            <AnchorPane prefHeight="653.0" prefWidth="668.0">
+               <children>
+                  <ScrollPane prefHeight="653.0" prefWidth="668.0" style="-fx-background-color: transparent; -fx-background: #00000d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <content>
+                        <ImageView fx:id="clipboardImage" fitHeight="653.0" fitWidth="668.0" pickOnBounds="true" preserveRatio="true" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+         </content>
+    </Tab>
+      <Tab fx:id="file" style="-fx-background-color: #00000d;">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="277.0">
+               <children>
+                  <ListView fx:id="fileList" prefHeight="530.0" prefWidth="661.0" stylesheets="@css/list.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children></AnchorPane>
+        </content>
+         <graphic>
+            <ImageView fitHeight="62.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons8-file.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Tab>
+  </tabs>
+</TabPane>
